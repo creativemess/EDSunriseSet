@@ -95,7 +95,7 @@ static const int minutesInDay= 60.0*24.0;
 static const int secondsInHour= 60.0*60.0;
 
 #pragma mark -
-#pragma mark Initialization & dealloc
+#pragma mark Initialization
 -(EDSunriseSet*)initWithTimezone:(NSTimeZone*)tz latitude:(double)lat longitude:(double)longt
 {
     self = [super init];
@@ -103,7 +103,7 @@ static const int secondsInHour= 60.0*60.0;
     {
         _latitude   = lat;
         _longitude  = longt;
-        _timezone   = [tz retain];
+        _timezone   = tz;
         _sunrise = nil;
         _sunset = nil;
         _civilTwilightEnd = nil;
@@ -114,33 +114,17 @@ static const int secondsInHour= 60.0*60.0;
         _astronomicalTwilightStart = nil;
         
         _calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        _utcTimeZone = [[NSTimeZone timeZoneWithAbbreviation:@"UTC"] retain];
+        _utcTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
 
     }
     return self;
 }
 +(EDSunriseSet*)sunrisesetWithTimezone:(NSTimeZone*)tz latitude:(double)lat longitude:(double)longt
 {
-    return [[[EDSunriseSet alloc] initWithTimezone:tz latitude:lat longitude:longt] autorelease];
+    return [[EDSunriseSet alloc] initWithTimezone:tz latitude:lat longitude:longt];
     
 }
 
--(void)dealloc
-{
-    
-    [_sunrise release];
-    [_sunset release];
-    [_civilTwilightEnd release];
-    [_civilTwilightStart release];
-    [_nauticalTwilightEnd release];
-    [_nauticalTwilightStart release];
-    [_astronomicalTwilightEnd release];
-    [_astronomicalTwilightStart release];
-    [_calendar release];
-    [_utcTimeZone release];
-    [_timezone release];
-    [super dealloc];
-}
 #pragma mark -
 #pragma mark Calculation methods
 -(void)calculateSunriseSunset:(NSDate*)date;
